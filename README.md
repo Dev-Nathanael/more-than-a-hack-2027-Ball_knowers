@@ -3,6 +3,7 @@
 Our entry for More than a Hack 2027, Phase 1. It labels every frame of Barcelona vs Athletic Club
 as **H** (home has the ball), **A** (away has the ball) or **D** (dead ball).
 
+- **Team:** Nathanael Leong, Russell Ng, Li Jiaen.
 - **Submitted file:** `Ball_knowers.csv`, produced by solution 42. SHA-256 `6a82e233b51acfd3c5ce351c87ff5733b93ad319f2298bbeac2f510fef8c2ec7`.
 - **Technical document:** [Ball_knowers.md](Ball_knowers.md).
 - **No hand labels, and nothing trained on this match.** Every setting comes from football or from
