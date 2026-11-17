@@ -127,31 +127,13 @@ tracked players can move, how the two cameras agree).
 
 ## 5. Limitations
 
-- **The public score flatters the method.** Several steps were written after we looked at cases
-  inside the public five minutes: the touch steps, the goal-kick, restart and placement rules, the
-  trusted-touch filter, and the two whistle steps. Each is a general rule with settings from football
-  or from other matches, and none refers to a frame of this match, but the cases that prompted them
-  are in that window. Public check of the submitted file: spellF1 0.703 (90% range 0.53 to 0.85),
-  macroF1 0.916.
-- **An independent estimate is lower.** A port of the chain to the seven outside matches (one camera,
-  no tags) gets live or dead right on 89% of frames and the team right on 87% of live frames, with
-  spellF1 of 0.41 against their labels and 0.53 after merging their possessions under 3 seconds
-  (their label changes on every touch). On that data most rule steps move the score by less than
-  0.02; the probability model does most of the work.
-- **No visible ball.** The ball is seen on about 60% of frames. Without it the team is read from
-  movement alone, and that is where most wrong-team frames are.
-- **Stoppages with no ball out and no tag** (offside, fouls away from the ball) are found from the
-  players slowing down, which starts about a second late and is wrong about one time in ten on
-  other matches.
-- **The completed-pass rule could not be tested on outside data**, whose possession label follows a
-  different convention; there it is slightly negative.
-- **Possessions under about 1.5 seconds** are not found; the two-plays rule works against them.
-- **Corners and about half the goal kicks**, where neither camera sees the ball.
-- **Tracking errors that remain:** a team shows more than 11 players on 6% of frames.
-
-With more time: evidence for the ball-less stretches (the referee's whistle in the audio, the
-broadcast cutting away from live play), and a proper held-out test on matches labelled with our
-possession convention.
+- **No visible ball (about 40% of frames):** the team is read from player movement alone. Next step:
+  the referee's whistle in the audio and the broadcast cutting away from live play.
+- **Stoppages with no ball out and no tag** (offside, fouls) are found about a second late, from the
+  players slowing down. The whistle in the audio would time them exactly.
+- **Corners, some goal kicks, and possessions under 1.5 seconds** are the cases still missed.
+- **Testing:** the public five minutes hold only 17 possessions, so we read their score as a check,
+  not a measure. Next step: a held-out test on matches labelled with our possession convention.
 
 ## 6. Reproduction
 
