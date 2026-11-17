@@ -8,9 +8,14 @@ SHA-256 `6a82e233b51acfd3c5ce351c87ff5733b93ad319f2298bbeac2f510fef8c2ec7`.
 
 ## 1. The approach
 
-We label possession the way a football analyst would: decide what to believe, form a first opinion,
-then apply the rules of the game. That is five questions asked in order, each answered by a few
-small steps.
+**The problem.** The tracking is automatic, and it is not clean. Players are lost when they bunch up,
+some tracks are put on the wrong team, and the ball is not seen on four frames in ten. A method that
+trusts every number is wrong exactly where the game is decided, around the ball.
+
+**So we split the work in two.** First, clean the data: repair what can be repaired by rule, and
+join the two cameras into one set of players per frame. Second, decide possession on the cleaned
+data: a probability model gives a first opinion and keeps only what it is sure of, then the rules of
+football settle the rest. That is five questions asked in order, each answered by a few small steps.
 
 What makes it strong:
 
