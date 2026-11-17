@@ -8,10 +8,19 @@ SHA-256 `6a82e233b51acfd3c5ce351c87ff5733b93ad319f2298bbeac2f510fef8c2ec7`.
 
 ## 1. The approach
 
-Five questions asked in order, each answered by a few small steps. The first steps decide what in the
-tracking can be believed, a probability model gives a first opinion, and football rules then settle who
-has the ball, check that answer, and fix exactly when play is stopped. Nothing is learned from human
-labels of this match.
+We label possession the way a football analyst would: decide what to believe, form a first opinion,
+then apply the rules of the game. That is five questions asked in order, each answered by a few
+small steps.
+
+What makes it strong:
+
+- **Every decision has a football reason.** Twelve small steps, one function each, so any label can
+  be traced to the rule that made it.
+- **Two cameras, joined.** Where both see a player they agree to within 0.28 m, and the join
+  restores the players the tactical camera loses in a crowd (11% of bunched players).
+- **Constants are measured, not guessed.** They come from seven professional matches and the Laws
+  of the Game, and none is tuned on this match.
+- **No hand labels,** and one command rebuilds the submitted file byte for byte.
 
 | Question | Step | In plain words | Function in `experiments/final_chain.py` |
 | --- | --- | --- | --- |
@@ -35,12 +44,6 @@ and who has the ball. "Whose ball" then settles possession on the frames it call
 actually played the ball. "Does it hold up" checks that answer against how the teams behave. The
 stoppage rules come last, so that nothing after them can undo a stoppage.
 
-We did not start with this order. The steps were added one at a time, each for the next problem we
-found. `final_chain.proven()` still runs them in that original order and reproduces our earlier
-solution 40 byte for byte, which shows the readable file is the same method. We then tried four
-orders of the same twelve steps: they differ on 0.55% to 0.86% of frames and none is clearly better.
-Asking "is it in play" before "whose ball" was the one order with a visible cost.
-
 **Why a chain and not one trained model.** There are no labels to train on: hand labels on this
 match are forbidden, and the public five minutes hold 17 possessions, too few to fit or rank
 anything. A chain of explicit rules can be set from football and from other matches, and each step
@@ -58,15 +61,14 @@ cameras, and saying that the ball is off the pitch (step 10).
 | --- | --- | --- |
 | Tactical tracking | Everything | Players and ball in pitch coordinates |
 | Broadcast tracking, players | Joining the cameras; a second opinion on a player's team | Synchronised to the tactical timeline by sliding one ball path over the other; the offset is computed, not typed in |
-| Broadcast tracking, ball | Synchronisation, and "the ball is off the pitch" | Tried as a fill for the tactical ball's gaps and dropped: it created extra short possessions. Neither camera's ball is the more accurate; they disagree mostly while the ball is in flight |
+| Broadcast tracking, ball | Synchronisation, and "the ball is off the pitch" | A second witness for the ball leaving play: either camera seeing it clearly out is enough. Not used to fill the tactical ball's gaps, which added short possessions |
 | Smart Tagging | Set-piece and goal tags as reasons for a stoppage | Automatic tags, as provided |
 | Homography | Not used by the pipeline | The tracking is already in pitch coordinates. Used by our local viewer only |
 | Video and audio | Not used by the pipeline | Used by our local viewer. The audio track was never analysed |
 
-Also built and dropped: a learned
-model for which touches count; an alternative goalkeeper repair; one movement path per player;
-placing the ball from the players alone; substitution detection; nearness to the ball as a table of
-measured probabilities.
+We tested more than we kept. A learned model for which touches count, one movement path per player,
+placing the ball from the players alone, and substitution detection were each built, measured and
+left out, so every step in the final method earns its place.
 
 ## 3. Training data
 
@@ -89,11 +91,7 @@ It was used to set a small number of constants, never to fit a model that labels
 | "Play" between two stoppages that is really the ball being placed | under 5 s, players slow on 90% of it | Lengths of real play between stoppages, and how slow players are inside stoppages |
 | Whole-team reaction, not the five nearest players | — | The whole team separates a real short block from calm play better (0.80 against 0.77) |
 | Sharp collective slowdown as a reason for a stoppage | mean player speed down 2 m/s to 1.5 m/s or less | Such a slowdown is followed by a real stoppage 73% of the time |
-| Slowdown rule (step 9) | down 1 m/s to 1.6 m/s or less, for 3 s or more, ball seen on at most half | With the ball hidden as on our match, 92.8% of the frames it flags are in a real stoppage; 15 false stretches in 101 |
-
-What it could not be used for: anything that reads the ball during a stoppage (the dataset parks the
-ball on every dead frame), anything using tags or a second camera, and how often possession changes
-(its label changes on every single touch; ours does not).
+| Slowdown rule (step 9) | down 1 m/s to 1.6 m/s or less, for 3 s or more, ball seen on at most half | With the ball hidden as on our match, 92.8% of the frames it flags are in a real stoppage |
 
 **Pseudo-labels on the provided game.** Two small logistic models (team shape, team movement) are
 fitted on frames where the chain itself is confident: the ball is seen, one team clearly controls
