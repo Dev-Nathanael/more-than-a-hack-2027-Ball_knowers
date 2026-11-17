@@ -1,0 +1,9 @@
+# SHA-256 of the files we built and verified (a rebuild from an empty cache gave the identical file).
+# submit.py prints MATCH or MISMATCH against these. Hashes only: no match data.
+42 6a82e233b51acfd3c5ce351c87ff5733b93ad319f2298bbeac2f510fef8c2ec7  # the uploaded file, Ball_knowers.csv
+40 34e18807fbe3ba036fe425ab85666cd173d55faa88593460bcb096eacaddd22b
+39 888b5c221d7591d389dac0143ec532ff31a9b76f3174e411239c7ec6e20788c9
+38 859366c2eaf6b45af0048569f9bdfe07191a74626e3be3f326bca584807604cd
+37 0908de40aebc8c0d45f72f3ba949b0483d47ae6c28f7864fd52ef67a3d4167aa
+36 448e610e4754ae6f7d1f3476bbf65e79f34680f8f12965115412122d295b541c
+34 5961f42e9cd40423dc322db422328ef9450891ec20424678e451877386003d36
