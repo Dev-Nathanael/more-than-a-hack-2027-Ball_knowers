@@ -129,31 +129,6 @@ We used one outside dataset, to set a few constants and to test ideas. We labell
 | Sharp slowdown as a reason for a stoppage | mean speed down 2 m/s to 1.5 m/s or less | Followed by a real stoppage 73% of the time |
 | Slowdown rule | down 1 m/s to 1.6 m/s or less, for 3 s or more | 92.8% of flagged frames are in a real stoppage |
 
-## What we tried and dropped
-
-Built and measured, then left out of the submitted solution.
-
-| Idea | Why it is out |
-| --- | --- |
-| Fill the tactical ball's gaps from the broadcast ball | It created extra short possessions. Neither camera's ball is the more accurate |
-| A learned model for which touches count | It followed the outside matches' convention, where every touch changes possession |
-| One movement path per player | Tracks are pieces of about half a minute with no names; a path stays the same player 75% of a half |
-| Place the ball from the players alone | Off by about 6 m: an area, not a position |
-| Substitution detection | Not reliable from this tracking, and possession is labelled by team |
-| Nearness to the ball as a table of measured probabilities | No gain on held-out matches |
-
-## How good is it, honestly
-
-- **On the five public minutes:** spellF1 0.703 (90% range 0.53 to 0.85), macroF1 0.916. This number
-  flatters us. Several steps were written after we looked at cases inside those five minutes. Each
-  is a general rule and none refers to a frame of this match, but the cases that prompted them are
-  there.
-- **On the seven outside matches,** with one camera and no tags: live or dead right on 89% of frames,
-  the team right on 87% of live frames, spellF1 between 0.41 and 0.53 depending on how their
-  possession label is read (theirs changes on every touch, ours does not).
-- **Where it still fails:** stretches with no visible ball, possessions shorter than about 1.5
-  seconds, corners and some goal kicks.
-
 ## Repository layout
 
 | Path | What |
